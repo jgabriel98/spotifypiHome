@@ -1,0 +1,18 @@
+na mesma maquina:
+
+após instalar o raspotify, editar o arquivo de configuração "/etc/default/raspotify", adicionando no campo OPTIONS:
+OPTIONS="--device /tmp/snapfifo"
+BACKEND_ARGS="--backend pipe"
+
+instalar o snapcast server, e no arquivo /etc/snapserver.config, adicionar a linha:
+stream = pipe:///tmp/snapfifo?name=Spotify&sampleformat=44100:16:2
+
+obs: sobre o sampleformat: https://github.com/badaix/snapcast/issues/102
+
+
+na(s) maquina que vão tocar:
+
+instalar snapcast client
+
+caso tenha alterado configurações de rede do server (ip e/ou porta) configurar o client de acordo,
+se não, não é necessário fazer nada.
