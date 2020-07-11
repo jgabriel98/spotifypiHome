@@ -1,3 +1,8 @@
+ATENÇÃO: este arquivo de texto é apenas um mini guia para se situar de como instalar/configurar manualmente esse projeto.
+Alguns detalhes são omitidos, requerendo que o leito tenha familiaridade com build de projetos e linux.
+
+E Recomendado que utilize o script setup.sh para instalação e configuração automática.
+
 na mesma maquina:
 
 após instalar o raspotify, editar o arquivo de configuração "/etc/default/raspotify", adicionando no campo OPTIONS:
@@ -16,3 +21,15 @@ instalar snapcast client
 
 caso tenha alterado configurações de rede do server (ip e/ou porta) configurar o client de acordo,
 se não, não é necessário fazer nada.
+
+
+para instalar o shairport (suporte ao airplay)
+
+clone o repositório https://github.com/mikebrady/shairport-sync
+
+siga as instruções de instalação do proprio repositório, habilitando a flag --with-pipe
+
+configure o arquivo /etc/shairport-sync.conf, para utilizar o pipe como backend e o pipe ser /tmp/snapfifo_shairport
+
+então adicione esta linha no arquivo /etc/snapserver.config:
+stream = pipe:///tmp/snapfifo_shairport?name=ShairportSync&sampleformat=44100:16:2

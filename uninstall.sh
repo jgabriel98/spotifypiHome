@@ -19,9 +19,47 @@ LIGHT_CYAN='\033[1;36m'
 LIGHT_GRAY='\033[0;37m'
 DARK_GRAY='\033[1;30m'
 
-echo -e "\n${YELLOW}removing ${LIGHT_BLUE}snapclient${NC}"
-sudo apt remove --purge snapclient -y
-echo -e "\n${YELLOW}removing ${LIGHT_BLUE}snapserver${NC}"
-sudo apt remove --purge snapserver -y
-echo -e "\n${YELLOW}removing ${LIGHT_BLUE}raspotify${NC}"
-sudo apt remove --purge raspotify -y
+if command -v snapclient &> /dev/null; then
+	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}snapclient${NC}"
+	sudo apt remove --purge snapclient -y
+else
+	echo -e "\n${LIGHT_BLUE}snapclient${WHITE} was not installed"
+fi
+
+if command -v snapserver &> /dev/null; then
+	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}snapserver${NC}"
+	sudo apt remove --purge snapserver -y
+else
+	echo -e "\n${LIGHT_BLUE}snapserver${WHITE} was not installed"
+fi
+
+if command -v librespot &> /dev/null; then
+	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}raspotify${NC}"
+	sudo apt remove --purge raspotify -y
+else
+	echo -e "\n${LIGHT_BLUE}raspotify${WHITE} was not installed"
+fi
+
+echo -e "\n${YELLOW}removing ${LIGHT_BLUE}shairport${NC}"
+
+echo -e "\n${WHITE}building ${LIGHT_BLUE}shairport${WHITE} makefile${NC}"
+if command -v shairport-sync &> /dev/null; then
+	curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc1.tar.gz | tar xz
+	cd shairport-sync-3.3.7rc1/
+	autoreconf -i -f
+	./configure --sysconfdir=/etc --with-pipe --with-systemd --with-convolution --with-mpris-interface --with-avahi --with-ssl=openssl
+	
+	echo -e "\n${YELLOW}runing make uninstall for ${LIGHT_BLUE}shairport${NC}"
+	sudo make uninstall
+	rm -r shairport-sync-3.3.7rc1/
+
+	echo -e "\n${YELLOW}cleaning ${LIGHT_BLUE}shairport${YELLOW}configuration files${NC}"
+	sudo systemctl stop shairport-sync.service
+	sudo systemctl disable shairport-sync.service
+	sudo rm /etc/systemd/system/shairport-sync.service
+	sudo rm /lib/systemd/system/shairport-sync.service
+	sudo rm /etc/init.d/shairport-sync
+
+else
+	echo -e "\n${LIGHT_BLUE}shairport${WHITE} was not installed"
+fi
