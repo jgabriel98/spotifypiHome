@@ -1,6 +1,8 @@
 # spotifypiHome
 multiroom home audio/music center, with spotify and airplay support, using snapcast for the 'multiroom synchornization' part.
 
+dependencies:
+ - autoconf (can be installed with sudo apt-get install autoconf)
 
 To install, run the `setup.sh` script with sudo permissions.
 
