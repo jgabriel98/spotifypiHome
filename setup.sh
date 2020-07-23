@@ -48,7 +48,7 @@ echo -e "\n${YELLOW}building shairport-sync...${NC}"
 curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc1.tar.gz | tar xz
 cd shairport-sync-3.3.7rc1/
 autoreconf -i -f
-./configure --sysconfdir=/etc --with-pipe --with-systemd --with-convolution --with-mpris-interface --with-avahi --with-ssl=openssl
+./configure --sysconfdir=/etc --with-pipe --with-systemd --with-convolution --with-avahi --with-ssl=openssl
 make
 
 echo -e "\n${GREEN}installing shairport-sync...${NC}"
