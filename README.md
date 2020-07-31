@@ -2,10 +2,10 @@
 multiroom home audio/music center, with spotify and airplay support, using snapcast for the 'multiroom synchornization' part.
 
 dependencies:
-this project build shairport-sync from source, so to meet it depencies requirements you should run: <br/>
+this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be meet: <br/>
  `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
 
-
+there are no special dependencies needed to install the client nodes.
 
 ## Server Node installation
 
