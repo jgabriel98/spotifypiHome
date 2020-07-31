@@ -48,7 +48,7 @@ curl -k -L https://github.com/badaix/snapcast/releases/download/v0.20.0/snapclie
 sudo dpkg -i snapclient.deb
 rm -f snapclient.deb
 
-echo -e "\n${LIGHT_BLUE}configuring snapclient (only tested on raspberry pi 4)${NC}"
+echo -e "\n${LIGHT_BLUE}configuring snapclient (only tested on raspberry pi 4 and pi zeroW)${NC}"
 
 if $FORCE_HEADPHONES; then
     echo -e "${LIGHT_BLUE}setting 'Headphones' as the snapclient output device. For this to work 'Headphones' must be a listed device in `$ aplay -l` command" >&2
