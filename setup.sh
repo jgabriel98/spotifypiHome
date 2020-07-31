@@ -84,18 +84,7 @@ sudo cp ./etc/snapserver.conf /etc/snapserver.conf
 #sudo sed -i  "/# shairport pipe stream/a ${value}" /etc/snapserver.conf
 
 
-# snapclient setup
-
-echo -e "\n${GREEN}installing snapcast client...${NC}"
-curl -k -L https://github.com/badaix/snapcast/releases/download/v0.20.0/snapclient_0.20.0-1_armhf.deb -o 'snapclient.deb' &&
-sudo dpkg -i snapclient.deb
-rm -f snapclient.deb
-
-echo -e "\n${LIGHT_BLUE}configuring snapclient (only tested on raspberry pi 4)${NC}"
-echo 'SNAPCLIENT_OPTS="${SNAPCLIENT_OPTS} -s Headphones"' | sudo tee -a /etc/default/snapclient
-
 echo -e "\n${CYAN}restarting raspotify, shairport-sync and snapcast services${NC}"
 sudo systemctl restart raspotify.service
 sudo systemctl restart shairport-sync.service
 sudo systemctl restart snapserver.service
-sudo systemctl restart snapclient.service
