@@ -22,7 +22,7 @@ DARK_GRAY='\033[1;30m'
 
 # raspotify setup
 
-OPTIONS_VALUE="--device /tmp/snapfifo"
+OPTIONS_VALUE="--device /tmp/snapfifo_raspotify"
 BACKEND_ARGS_VALUE="--backend pipe"
 DEVICE_NAME_VALUE="Smarthome do gaba :)"
 
@@ -45,8 +45,8 @@ grep -q -e "^${DEVICE_NAME}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/
 # shairport setup
 
 echo -e "\n${YELLOW}building shairport-sync...${NC}"
-curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc1.tar.gz | tar xz
-cd shairport-sync-3.3.7rc1/
+curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
+cd shairport-sync-3.3.7rc2/
 autoreconf -i -f
 ./configure 'CFLAGS=-O3' 'CXXFLAGS=-O3' --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
 make
@@ -54,7 +54,7 @@ make
 echo -e "\n${GREEN}installing shairport-sync...${NC}"
 sudo make install
 cd ..
-rm -r shairport-sync-3.3.7rc1/
+rm -r shairport-sync-3.3.7rc2/
 sudo systemctl enable shairport-sync
 
 echo -e "\n${LIGHT_BLUE}configuring shairport-sync...${NC}"
@@ -64,7 +64,7 @@ sudo cp ./etc/shairport-sync.conf /etc/shairport-sync.conf
 # snapserver setup
 
 echo -e "\n${GREEN}installing snapcast server...${NC}"
-curl -k -L https://github.com/badaix/snapcast/releases/download/v0.20.0/snapserver_0.20.0-1_armhf.deb -o 'snapserver.deb' &&
+curl -k -L https://github.com/badaix/snapcast/releases/download/v0.22.0/snapserver_0.22.0-1_armhf.deb -o 'snapserver.deb' &&
 sudo dpkg -i snapserver.deb
 rm -f snapserver.deb
 

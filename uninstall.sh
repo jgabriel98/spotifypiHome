@@ -40,18 +40,17 @@ else
 	echo -e "\n${LIGHT_BLUE}raspotify${WHITE} was not installed"
 fi
 
-echo -e "\n${YELLOW}removing ${LIGHT_BLUE}shairport${NC}"
-
-echo -e "\n${WHITE}building ${LIGHT_BLUE}shairport${WHITE} makefile${NC}"
 if command -v shairport-sync &> /dev/null; then
-	curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc1.tar.gz | tar xz
-	cd shairport-sync-3.3.7rc1/
+	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}shairport${NC}"
+	echo -e "\n${WHITE}building ${LIGHT_BLUE}shairport${WHITE} makefile${NC}"
+	curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
+	cd shairport-sync-3.3.7rc2/
 	autoreconf -i -f
 	./configure --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
 	
 	echo -e "\n${YELLOW}runing make uninstall for ${LIGHT_BLUE}shairport${NC}"
 	sudo make uninstall
-	rm -r shairport-sync-3.3.7rc1/
+	rm -r shairport-sync-3.3.7rc2/
 
 	echo -e "\n${YELLOW}cleaning ${LIGHT_BLUE}shairport${YELLOW}configuration files${NC}"
 	sudo systemctl stop shairport-sync.service
