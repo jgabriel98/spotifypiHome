@@ -1,11 +1,15 @@
 # spotifypiHome
-multiroom home audio/music center, with spotify and airplay support, using snapcast for the 'multiroom synchornization' part.
+multiroom home audio/music playback, with spotify and airplay support, using snapcast for the 'multiroom synchornization' part.\
+note: even if it is a multiroom solution, you can use it as unique room playback device, with no problems.
 
-dependencies:
+This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync) and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
+
+#### dependencies:
 this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be meet: <br/>
  `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
 
 there are no special dependencies needed to install the client nodes.
+
 
 ## Server Node installation
 
@@ -13,6 +17,7 @@ In your setup, you can have only one _Server node_, since it will be an interfac
 and as an **syncrhonized audio stream source for the client nodes**.
 
 To install and configure the server node, run the `setup.sh` script with sudo permissions from the device you wish to be the server.
+
 
 
 ## Client Node instalattion
