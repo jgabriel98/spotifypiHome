@@ -11,7 +11,7 @@ this project build shairport-sync from source, so to be able to install the serv
 there are no special dependencies needed to install the client nodes.
 
 
-## Server Node installation
+## Server Node installation (audio receiver)
 
 In your setup, you can have only one _Server node_, since it will be an interface beetween the user and the other nodes, showing as a **music player for the user** (spotify or airplay or bluetooth) 
 and as an **syncrhonized audio stream source for the client nodes**.
@@ -20,7 +20,7 @@ To install and configure the server node, run the `setup.sh` script with sudo pe
 
 
 
-## Client Node instalattion
+## Client Node instalattion (audio play)
 **A Server Node can also be a Client Node**
 
 In your setup you can have as many client nodes as you want (1,2,3,...maybe 10?). The client nodes you be the ones to receive and play the audio stream.
