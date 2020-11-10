@@ -19,47 +19,72 @@ LIGHT_CYAN='\033[1;36m'
 LIGHT_GRAY='\033[0;37m'
 DARK_GRAY='\033[1;30m'
 
+# arguments
+INSTALL_SHAIRPORT=true
+INSTALL_RASPOTIFY=true
+ # fonte de como usar isso: https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
+while (( "$#" )); do
+  case "$1" in
+    --no-shairport)
+      INSTALL_SHAIRPORT=false
+      shift
+      ;;
+    --no-spotify)
+      INSTALL_RASPOTIFY=false
+      shift
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      echo "Error: this script take no arguments $1" >&2
+      exit 1
+      ;;
+  esac
+done
+
 
 # raspotify setup
+if $INSTALL_RASPOTIFY; then
+  OPTIONS_VALUE="--device /tmp/snapfifo_raspotify"
+  BACKEND_ARGS_VALUE="--backend pipe"
+  DEVICE_NAME_VALUE="Smarthome do gaba :)"
 
-OPTIONS_VALUE="--device /tmp/snapfifo_raspotify"
-BACKEND_ARGS_VALUE="--backend pipe"
-DEVICE_NAME_VALUE="Smarthome do gaba :)"
+  RASPOTIFY_FILE="/etc/default/raspotify"
 
-RASPOTIFY_FILE="/etc/default/raspotify"
+  echo -e "\n${GREEN}installing raspotify...${NC}"
 
-echo -e "\n${GREEN}installing raspotify...${NC}"
+  curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
-curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
+  echo -e "\n${LIGHT_BLUE}configuring raspotify...${NC}"
 
-echo -e "\n${LIGHT_BLUE}configuring raspotify...${NC}"
-
-OPTIONS_CONF="OPTIONS=\"${OPTIONS_VALUE}\""
-BACKEND_CONF="BACKEND_ARGS=\"${BACKEND_ARGS_VALUE}\""
-DEVICE_NAME="DEVICE_NAME=\"${DEVICE_NAME_VALUE}\""
-grep -q -e "^${OPTIONS_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#OPTIONS=/a ${OPTIONS_CONF}" "${RASPOTIFY_FILE}"
-grep -q -e "^${BACKEND_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#BACKEND_ARGS=/a ${BACKEND_CONF}" "${RASPOTIFY_FILE}"
-grep -q -e "^${DEVICE_NAME}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/a ${DEVICE_NAME}" "${RASPOTIFY_FILE}"
-
+  OPTIONS_CONF="OPTIONS=\"${OPTIONS_VALUE}\""
+  BACKEND_CONF="BACKEND_ARGS=\"${BACKEND_ARGS_VALUE}\""
+  DEVICE_NAME="DEVICE_NAME=\"${DEVICE_NAME_VALUE}\""
+  grep -q -e "^${OPTIONS_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#OPTIONS=/a ${OPTIONS_CONF}" "${RASPOTIFY_FILE}"
+  grep -q -e "^${BACKEND_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#BACKEND_ARGS=/a ${BACKEND_CONF}" "${RASPOTIFY_FILE}"
+  grep -q -e "^${DEVICE_NAME}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/a ${DEVICE_NAME}" "${RASPOTIFY_FILE}"
+fi
 
 # shairport setup
+if $INSTALL_SHAIRPORT; then
+  echo -e "\n${YELLOW}building shairport-sync...${NC}"
+  curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
+  cd shairport-sync-3.3.7rc2/
+  autoreconf -i -f
+  ./configure 'CFLAGS=-O3' 'CXXFLAGS=-O3' --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
+  make
 
-echo -e "\n${YELLOW}building shairport-sync...${NC}"
-curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
-cd shairport-sync-3.3.7rc2/
-autoreconf -i -f
-./configure 'CFLAGS=-O3' 'CXXFLAGS=-O3' --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
-make
+  echo -e "\n${GREEN}installing shairport-sync...${NC}"
+  sudo make install
+  cd ..
+  rm -r shairport-sync-3.3.7rc2/
+  sudo systemctl enable shairport-sync
 
-echo -e "\n${GREEN}installing shairport-sync...${NC}"
-sudo make install
-cd ..
-rm -r shairport-sync-3.3.7rc2/
-sudo systemctl enable shairport-sync
-
-echo -e "\n${LIGHT_BLUE}configuring shairport-sync...${NC}"
-sudo cp ./etc/shairport-sync.conf /etc/shairport-sync.conf
-
+  echo -e "\n${LIGHT_BLUE}configuring shairport-sync...${NC}"
+  sudo cp ./etc/shairport-sync.conf /etc/shairport-sync.conf
+fi
 
 # snapserver setup
 
