@@ -45,13 +45,13 @@ done
 
 echo -e "\n${GREEN}installing snapcast client...${NC}"
 curl -k -L https://github.com/badaix/snapcast/releases/download/v0.22.0/snapclient_0.22.0-1_armhf.deb -o 'snapclient.deb' &&
-sudo dpkg -i snapclient.deb
+sudo apt install ./snapclient.deb -y  ||
 rm -f snapclient.deb
 
 echo -e "\n${LIGHT_BLUE}configuring snapclient (only tested on raspberry pi 4 and pi zeroW)${NC}"
 
 if $FORCE_HEADPHONES; then
-    echo -e "${LIGHT_BLUE}setting 'Headphones' as the snapclient output device. For this to work 'Headphones' must be a listed device in `$ aplay -l` command" >&2
+    echo -e "${LIGHT_BLUE}setting 'Headphones' as the snapclient output device. For this to work 'Headphones' must be a listed device in \`$ aplay -l\` command"
     echo 'SNAPCLIENT_OPTS="${SNAPCLIENT_OPTS} -s Headphones"' | sudo tee -a /etc/default/snapclient
 fi
 
