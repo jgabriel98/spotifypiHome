@@ -110,6 +110,6 @@ sudo cp ./etc/snapserver.conf /etc/snapserver.conf
 
 
 echo -e "\n${CYAN}restarting raspotify, shairport-sync and snapcast services${NC}"
-sudo systemctl restart raspotify.service
-sudo systemctl restart shairport-sync.service
+if $INSTALL_RASPOTIFY; then sudo systemctl restart raspotify.service; fi
+if $INSTALL_SHAIRPORT; then sudo systemctl restart shairport-sync.service; fi
 sudo systemctl restart snapserver.service
