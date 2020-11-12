@@ -18,6 +18,14 @@ and as an **syncrhonized audio stream source for the client nodes**.
 
 To install and configure the server node, run the `setup.sh` script with sudo permissions from the device you wish to be the server.
 
+#### Flags (experimental)
+experimental script flags (not 100% tested, but very probably will work fine)
+
+| flag            | description              |
+|-----------------|--------------------------|
+| `--no-spotify` 	| disable spotify support 	|
+| `--no-shairport`| disable airplay support 	|
+
 
 
 ## Client Node instalattion (audio play)
@@ -26,11 +34,18 @@ To install and configure the server node, run the `setup.sh` script with sudo pe
 In your setup you can have as many client nodes as you want (1,2,3,...maybe 10?). The client nodes you be the ones to receive and play the audio stream.
 
 To install and configure a client node, run the `clientSetup.sh` script with sudo permissions from the device.
-You can force the client node to use the headphone jack output with the `--force-headphones` optional flag:
+You can force the client node to use the headphone 3.5mm jack output with `--force-headphones` optional flag, instead of using system default device.:
 
 `$ sudo ./clientSetup.sh --force-headphones`
 
 note: you should check if you have the 'Headphones' playback device listed in alsa devices (with `$ aplay -l`)
+
+#### Flags (experimental)
+experimental script flags (not 100% tested, but very probably will work fine)
+
+| flag                  | description              |
+|-----------------------|--------------------------|
+| `--force-headphones`  | set headphone as output device |
 
 
 
