@@ -5,7 +5,7 @@ note: even if it is a multiroom solution, you can use it as unique room playback
 This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync) and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
 
 #### dependencies:
-this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be meet: <br/>
+this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be met: <br/>
  `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
 
 there are no special dependencies needed to install the client nodes.
