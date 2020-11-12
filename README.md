@@ -41,7 +41,6 @@ You can force the client node to use the headphone 3.5mm jack output with `--for
 note: you should check if you have the 'Headphones' playback device listed in alsa devices (with `$ aplay -l`)
 
 #### Flags
-experimental script flags
 
 | flag                  | description              |
 |-----------------------|--------------------------|
