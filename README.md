@@ -19,7 +19,7 @@ there are no dependencies needed for client nodes.
 In your setup, you can have only one _Server node_, since it will be an interface beetween the user and the other nodes, acting as a **music playback device for the user** (spotify, airplay or bluetooth) 
 and as an **syncrhonized audio stream source for the client nodes**.
 
-To install and configure the server node, run the `setup.sh` script with sudo permissions from the device you wish to be the server.
+To install and configure the server node, run the `serverInstall.sh` script with sudo permissions from the device you wish to be the server.
 
 #### Flags
 
@@ -36,10 +36,10 @@ To install and configure the server node, run the `setup.sh` script with sudo pe
 
 In your setup you can have as many client nodes as you want (1,2,3,...maybe 20?). The client nodes will be the ones to receive and play the audio stream.
 
-To install and configure a client node, run the `clientSetup.sh` script with sudo permissions from the device.
+To install and configure a client node, run the `clientInstall.sh` script with sudo permissions from the device.
 You can force the client node to use the headphone 3.5mm jack output with `--force-headphones` optional flag, instead of using system default device.:
 
-`$ sudo ./clientSetup.sh --force-headphones`
+`$ sudo ./clientInstall.sh --force-headphones`
 
 note: you should check if you have the 'Headphones' playback device listed in alsa devices (with `$ aplay -l`)
 
@@ -54,7 +54,7 @@ note: you should check if you have the 'Headphones' playback device listed in al
 ### Uninstalling
 
 To uninstall, run the `uninstall.sh` script with sudo permissions.<br/>
-Works for both _client and server_.
+Works for both _client_ and _server_.
 
 
 ## Roadmap
