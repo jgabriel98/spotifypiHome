@@ -55,3 +55,7 @@ note: you should check if you have the 'Headphones' playback device listed in al
 
 To uninstall, run the `uninstall.sh` script with sudo permissions.
 It is a _uninstall client and server_ script.
+
+
+## Roadmap
+check the [spotifypiHome Developing page](https://github.com/jgabriel98/spotifypiHome/projects/1)
