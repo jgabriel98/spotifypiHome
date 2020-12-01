@@ -20,8 +20,9 @@ LIGHT_GRAY='\033[0;37m'
 DARK_GRAY='\033[1;30m'
 
 
-FORCE_HEADPHONES=false
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
+FORCE_HEADPHONES=false
 
  # fonte de como usar isso: https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 while (( "$#" )); do
@@ -45,8 +46,8 @@ done
 
 echo -e "\n${GREEN}installing snapcast client...${NC}"
 curl -k -L https://github.com/badaix/snapcast/releases/download/v0.22.0/snapclient_0.22.0-1_armhf.deb -o 'snapclient.deb' &&
-sudo apt install ./snapclient.deb -y  ||
-rm -f snapclient.deb
+sudo apt install ./snapclient.deb -y
+sudo rm -f snapclient.deb
 
 echo -e "\n${LIGHT_BLUE}configuring snapclient (only tested on raspberry pi 4 and pi zeroW)${NC}"
 

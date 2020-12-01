@@ -19,9 +19,12 @@ LIGHT_CYAN='\033[1;36m'
 LIGHT_GRAY='\033[0;37m'
 DARK_GRAY='\033[1;30m'
 
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
+
 # arguments
 INSTALL_SHAIRPORT=true
 INSTALL_RASPOTIFY=true
+INSTALL_BLUETOOTH=true
  # fonte de como usar isso: https://medium.com/@Drew_Stokes/bash-argument-parsing-54f3b81a6a8f
 while (( "$#" )); do
   case "$1" in
@@ -31,6 +34,10 @@ while (( "$#" )); do
       ;;
     --no-spotify)
       INSTALL_RASPOTIFY=false
+      shift
+      ;;
+    --no-bluetooth)
+      INSTALL_BLUETOOTH=false
       shift
       ;;
     -*|--*=) # unsupported flags
@@ -86,6 +93,18 @@ if $INSTALL_SHAIRPORT; then
   sudo cp ./etc/shairport-sync.conf /etc/shairport-sync.conf
 fi
 
+# bluetooth setup
+if $INSTALL_BLUETOOTH; then
+ echo -e "\n${GREEN}installing BlueAlsa...${NC}"
+ apt install -y --no-install-recommends bluealsa
+
+ echo -e "\n${LIGHT_BLUE}configuring BlueAlsa...${NC}"
+ bash ./scripts/config-bluetooth.sh
+ mkdir -p /usr/local/share/sounds/bluetooth/
+ cp ./files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
+ cp ./files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav
+fi
+
 # snapserver setup
 
 echo -e "\n${GREEN}installing snapcast server...${NC}"
@@ -112,4 +131,5 @@ sudo cp ./etc/snapserver.conf /etc/snapserver.conf
 echo -e "\n${CYAN}restarting raspotify, shairport-sync and snapcast services${NC}"
 if $INSTALL_RASPOTIFY; then sudo systemctl restart raspotify.service; fi
 if $INSTALL_SHAIRPORT; then sudo systemctl restart shairport-sync.service; fi
+if $INSTALL_BLUETOOTH; then sudo systemctl restart bluealsa.service bluealsa-aplay.service; fi
 sudo systemctl restart snapserver.service

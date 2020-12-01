@@ -1,30 +1,33 @@
 # spotifypiHome
-multiroom home audio/music playback, with spotify connect and airplay support, using snapcast for the 'multiroom synchornization' part.\
+A multiroom audio/music playback, with spotify connect, airplay and bluetooth support, using snapcast for the 'multiroom synchornization' part.\
 note: even if it is a multiroom solution, you can use it as unique room playback device, with no problems.
 
-This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync) and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
+This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync), [BlueALSA](https://github.com/Arkq/bluez-alsa)  and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
 
 #### dependencies:
 this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be met: <br/>
- `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
+ `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`.
+
+for bluetooth, the following package must be installed: `alsa-base alsa-utils bluez-tools`, you can obtain them with `$ apt install -y --no-install-recommends alsa-base alsa-utils bluez-tools`.
 
 there are no special dependencies needed to install the client nodes.
 
 
 ## Server Node installation (audio receiver)
 
-In your setup, you can have only one _Server node_, since it will be an interface beetween the user and the other nodes, showing as a **music player for the user** (spotify or airplay or bluetooth) 
+In your setup, you can have only one _Server node_, since it will be an interface beetween the user and the other nodes, acting as a **music playback device for the user** (spotify, airplay or bluetooth) 
 and as an **syncrhonized audio stream source for the client nodes**.
 
 To install and configure the server node, run the `setup.sh` script with sudo permissions from the device you wish to be the server.
 
-#### Flags (experimental)
-experimental script flags (not 100% tested, but very probably will work fine)
+#### Flags
+experimental script flags
 
 | flag            | description              |
 |-----------------|--------------------------|
-| `--no-spotify` 	| disable spotify support 	|
-| `--no-shairport`| disable airplay support 	|
+| `--no-spotify`  | disable spotify support  |
+| `--no-shairport`| disable airplay support  |
+| `--no-bluetooth`| disable bluetooth support|
 
 
 

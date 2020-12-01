@@ -2,9 +2,8 @@
 
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
-apt install -y --no-install-recommends alsa-base alsa-utils bluealsa bluez-tools
-
 # Bluetooth settings
+cp -n /etc/bluetooth/main.conf  /etc/bluetooth/main.conf.custom_bak
 cat <<'EOF' > /etc/bluetooth/main.conf
 [General]
 Class = 0x200414
@@ -23,6 +22,7 @@ ExecStartPost=/bin/hciconfig %I piscan
 ExecStartPost=/bin/hciconfig %I sspmode 1
 EOF
 
+cp -n /etc/systemd/system/bt-agent.service /etc/systemd/system/bt-agent.service.custom_bak
 cat <<'EOF' > /etc/systemd/system/bt-agent.service
 [Unit]
 Description=Bluetooth Agent
@@ -39,6 +39,7 @@ EOF
 systemctl enable bt-agent.service
 
 # ALSA settings
+cp -n /lib/modprobe.d/aliases.conf /lib/modprobe.d/aliases.conf.custom_bak
 sed -i.orig 's/^options snd-usb-audio index=-2$/#options snd-usb-audio index=-2/' /lib/modprobe.d/aliases.conf
 
 # BlueALSA
@@ -52,7 +53,11 @@ Restart=always
 EOF
 
 # append config: redirect BlueAlsa to pipe
+if grep -q "# spotifypiHome config for bluealsa" /etc/alsa/conf.d/20-bluealsa.conf; then
+    sed -i '/# spotifypiHome config for bluealsa/,/# end/d' /etc/alsa/conf.d/20-bluealsa.conf
+fi
 cat << 'EOF' >> /etc/alsa/conf.d/20-bluealsa.conf
+# spotifypiHome config for bluealsa
 pcm.fifo {
     type plug
     slave.pcm rate44100Hz
@@ -71,8 +76,10 @@ pcm.writeFile {
     file "/tmp/snapfifo_bluetooth"
     format "raw"
 }
+# end
 EOF
 
+cp -n /etc/systemd/system/bluealsa-aplay.service /etc/systemd/system/bluealsa-aplay.service.custom_bak
 cat <<'EOF' > /etc/systemd/system/bluealsa-aplay.service
 [Unit]
 Description=BlueALSA aplay

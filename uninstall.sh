@@ -19,6 +19,8 @@ LIGHT_CYAN='\033[1;36m'
 LIGHT_GRAY='\033[0;37m'
 DARK_GRAY='\033[1;30m'
 
+if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
+
 if command -v snapclient &> /dev/null; then
 	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}snapclient${NC}"
 	sudo apt remove --purge snapclient -y
@@ -38,6 +40,19 @@ if command -v librespot &> /dev/null; then
 	sudo apt remove --purge raspotify -y
 else
 	echo -e "\n${LIGHT_BLUE}raspotify${WHITE} was not installed"
+fi
+
+if command -v bluealsa-aplay &> /dev/null; then
+	echo -e "\n${ORANGE}removing* ${LIGHT_BLUE}bluealsa${NC}"
+	sudo apt remove --purge bluealsa -y
+	sudo rm -r /etc/systemd/system/bthelper@.service.d
+	sudo mv /etc/bluetooth/main.conf.custom_bak  /etc/bluetooth/main.conf
+	sudo mv /etc/systemd/system/bt-agent.service.custom_bak /etc/systemd/system/bt-agent.service
+	sudo mv /lib/modprobe.d/aliases.conf.custom_bak /lib/modprobe.d/aliases.conf
+	#sudo rm /etc/systemd/system/bluealsa.service.d/override.conf && sudo rm -d /etc/systemd/system/bluealsa.service.d/
+	sudo sed -i '/# spotifypiHome config for bluealsa/,/# end/d' /etc/alsa/conf.d/20-bluealsa.conf
+else
+	echo -e "\n${LIGHT_BLUE}bluealsa${WHITE} was not installed"
 fi
 
 if command -v shairport-sync &> /dev/null; then
