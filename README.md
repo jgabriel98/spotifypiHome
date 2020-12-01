@@ -1,5 +1,5 @@
 # spotifypiHome
-A multiroom audio/music playback, with spotify connect, airplay and bluetooth support, using snapcast for the 'multiroom synchornization' part.\
+A multiroom audio/music playback, with **spotify connect**, **airplay** and **bluetooth** support, using snapcast for the 'multiroom synchornization' part.\
 note: even if it is a multiroom solution, you can use it as unique room playback device, with no problems.
 
 This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync), [BlueALSA](https://github.com/Arkq/bluez-alsa)  and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
