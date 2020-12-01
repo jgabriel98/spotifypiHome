@@ -21,6 +21,10 @@ DARK_GRAY='\033[1;30m'
 
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
+DEVICE_NAME=$(hostname)
+read -p "Device name (default is '$DEVICE_NAME'): " DEVICE_NAME
+
+
 # arguments
 INSTALL_SHAIRPORT=true
 INSTALL_RASPOTIFY=true
@@ -56,7 +60,6 @@ done
 if $INSTALL_RASPOTIFY; then
   OPTIONS_VALUE="--device /tmp/snapfifo_raspotify"
   BACKEND_ARGS_VALUE="--backend pipe"
-  DEVICE_NAME_VALUE="Smarthome do gaba :)"
 
   RASPOTIFY_FILE="/etc/default/raspotify"
 
@@ -68,10 +71,10 @@ if $INSTALL_RASPOTIFY; then
 
   OPTIONS_CONF="OPTIONS=\"${OPTIONS_VALUE}\""
   BACKEND_CONF="BACKEND_ARGS=\"${BACKEND_ARGS_VALUE}\""
-  DEVICE_NAME="DEVICE_NAME=\"${DEVICE_NAME_VALUE}\""
+  DEVICE_NAME_CONF="DEVICE_NAME=\"${DEVICE_NAME}\""
   grep -q -e "^${OPTIONS_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#OPTIONS=/a ${OPTIONS_CONF}" "${RASPOTIFY_FILE}"
   grep -q -e "^${BACKEND_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#BACKEND_ARGS=/a ${BACKEND_CONF}" "${RASPOTIFY_FILE}"
-  grep -q -e "^${DEVICE_NAME}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/a ${DEVICE_NAME}" "${RASPOTIFY_FILE}"
+  grep -q -e "^${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/a ${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}"
 fi
 
 # shairport setup
@@ -91,6 +94,7 @@ if $INSTALL_SHAIRPORT; then
 
   echo -e "\n${LIGHT_BLUE}configuring shairport-sync...${NC}"
   sudo cp ./etc/shairport-sync.conf /etc/shairport-sync.conf
+  sed -i "s/<DEVICE_NAME>/$DEVICE_NAME/" /etc/shairport-sync.conf
 fi
 
 # bluetooth setup
@@ -99,7 +103,7 @@ if $INSTALL_BLUETOOTH; then
  apt install -y --no-install-recommends bluealsa
 
  echo -e "\n${LIGHT_BLUE}configuring BlueAlsa...${NC}"
- bash ./scripts/config-bluetooth.sh
+ bash ./scripts/config-bluetooth.sh "$DEVICE_NAME"
  mkdir -p /usr/local/share/sounds/bluetooth/
  cp ./files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
  cp ./files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav

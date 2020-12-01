@@ -2,15 +2,26 @@
 
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
+
+DEVICE_NAME=$1
+
 # Bluetooth settings
 cp -n /etc/bluetooth/main.conf  /etc/bluetooth/main.conf.custom_bak
-cat <<'EOF' > /etc/bluetooth/main.conf
+cat > /etc/bluetooth/main.conf << EOF
 [General]
+Name = ${DEVICE_NAME}
 Class = 0x200414
 DiscoverableTimeout = 0
 [Policy]
 AutoEnable=true
 EOF
+
+BT_MAC=`bluetoothctl list | grep '[default]' | grep -o  "..:..:..:..:..:.."`
+if grep '^Name' /var/lib/bluetooth/$BT_MAC/settings; then
+  sed -i "s/Name.*/Name = $DEVICE_NAME" /var/lib/bluetooth/$BT_MAC/settings
+else
+  echo "Name = ${DEVICE_NAME}" >> /var/lib/bluetooth/$BT_MAC/settings
+fi
 
 # Make Bluetooth discoverable after initialisation
 mkdir -p /etc/systemd/system/bthelper@.service.d
