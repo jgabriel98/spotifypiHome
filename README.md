@@ -4,11 +4,12 @@ note: even if it is a multiroom solution, you can use it as unique room playback
 
 This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync), [BlueALSA](https://github.com/Arkq/bluez-alsa)  and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
 
-#### dependencies:
+### dependencies:
 this project build shairport-sync from source, so to be able to install the server node, the following depencies requirements should be met: <br/>
- `apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`.
+   `$ apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`.
 
-for bluetooth, the following package must be installed: `alsa-base alsa-utils bluez-tools`, you can obtain them with `$ apt install -y --no-install-recommends alsa-base alsa-utils bluez-tools`.
+for bluetooth, the following package must be installed: `alsa-base alsa-utils bluez-tools`, you can obtain them with <br/>
+    `$ apt install -y --no-install-recommends alsa-base alsa-utils bluez-tools`.
 
 there are no special dependencies needed to install the client nodes.
 
@@ -31,10 +32,10 @@ experimental script flags
 
 
 
-## Client Node instalattion (audio play)
+## Client Node instalattion (audio playing)
 **A Server Node can also be a Client Node**
 
-In your setup you can have as many client nodes as you want (1,2,3,...maybe 10?). The client nodes you be the ones to receive and play the audio stream.
+In your setup you can have as many client nodes as you want (1,2,3,...maybe 20?). The client nodes will be the ones to receive and play the audio stream.
 
 To install and configure a client node, run the `clientSetup.sh` script with sudo permissions from the device.
 You can force the client node to use the headphone 3.5mm jack output with `--force-headphones` optional flag, instead of using system default device.:
@@ -53,8 +54,8 @@ note: you should check if you have the 'Headphones' playback device listed in al
 
 ### Uninstalling
 
-To uninstall, run the `uninstall.sh` script with sudo permissions.
-It is a _uninstall client and server_ script.
+To uninstall, run the `uninstall.sh` script with sudo permissions.<br/>
+Works for both _client and server_.
 
 
 ## Roadmap
