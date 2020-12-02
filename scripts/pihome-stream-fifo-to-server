@@ -1,0 +1,26 @@
+#!/bin/bash
+if [ $# -eq 0 ]; then
+    echo "missing argument: fifo file" >&2
+    exit 1
+fi
+
+
+SERVER_IP=`journalctl -b -r -u snapclient.service | grep -m 1 -o -P "(?<=Connected to ).*"`
+if [ $? -eq 1 ]; then
+    echo "Failure: could not extract snapserver IP from snapclient logs. Snapclient didn't connected yet?" >&2
+    exit 2
+fi
+
+
+FIFO=$1
+if [ -f "$FIFO" ]; then
+    sudo mkfifo "$FIFO"
+else
+    dd if="$FIFO" iflag=nonblock of=/dev/null
+#    cat "$FIFO" > /dev/null
+fi
+
+
+while true; do cat  "$FIFO"; done | nc $SERVER_IP 4953 -v -N
+#nc 192.168.1.107 4953 -v <$FIFO
+

@@ -3,7 +3,7 @@
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 
-DEVICE_NAME=$1
+DEVICE_NAME="$1"
 
 # Bluetooth settings
 cp -n /etc/bluetooth/main.conf  /etc/bluetooth/main.conf.custom_bak
@@ -16,9 +16,10 @@ DiscoverableTimeout = 0
 AutoEnable=true
 EOF
 
+# Ensure that name get changed
 BT_MAC=`bluetoothctl list | grep '[default]' | grep -o  "..:..:..:..:..:.."`
 if grep '^Name' /var/lib/bluetooth/$BT_MAC/settings; then
-  sed -i "s/Name.*/Name = $DEVICE_NAME" /var/lib/bluetooth/$BT_MAC/settings
+  sed -i "s/Name.*/Name = $DEVICE_NAME/" /var/lib/bluetooth/$BT_MAC/settings
 else
   echo "Name = ${DEVICE_NAME}" >> /var/lib/bluetooth/$BT_MAC/settings
 fi
