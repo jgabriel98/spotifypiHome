@@ -33,7 +33,7 @@ ExecStartPost=/bin/hciconfig %I piscan
 ExecStartPost=/bin/hciconfig %I sspmode 1
 EOF
 
-cp -n /etc/systemd/system/bt-agent.service /etc/systemd/system/bt-agent.service.custom_bak
+cp -n /etc/systemd/system/bt-agent.service /etc/systemd/system/bt-agent.service.custom_bak 2>/dev/null
 cat <<'EOF' > /etc/systemd/system/bt-agent.service
 [Unit]
 Description=Bluetooth Agent
@@ -90,7 +90,7 @@ pcm.writeFile {
 # end
 EOF
 
-cp -n /etc/systemd/system/bluealsa-aplay.service /etc/systemd/system/bluealsa-aplay.service.custom_bak
+cp -n /etc/systemd/system/bluealsa-aplay.service /etc/systemd/system/bluealsa-aplay.service.custom_bak 2>/dev/null
 cat <<'EOF' > /etc/systemd/system/bluealsa-aplay.service
 [Unit]
 Description=BlueALSA aplay
