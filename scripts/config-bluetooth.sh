@@ -3,7 +3,7 @@
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
 
-DEVICE_NAME=$1
+DEVICE_NAME="$1"
 
 # Bluetooth settings
 cp -n /etc/bluetooth/main.conf  /etc/bluetooth/main.conf.custom_bak
@@ -16,9 +16,10 @@ DiscoverableTimeout = 0
 AutoEnable=true
 EOF
 
+# Ensure that name get changed
 BT_MAC=`bluetoothctl list | grep '[default]' | grep -o  "..:..:..:..:..:.."`
 if grep '^Name' /var/lib/bluetooth/$BT_MAC/settings; then
-  sed -i "s/Name.*/Name = $DEVICE_NAME" /var/lib/bluetooth/$BT_MAC/settings
+  sed -i "s/Name.*/Name = $DEVICE_NAME/" /var/lib/bluetooth/$BT_MAC/settings
 else
   echo "Name = ${DEVICE_NAME}" >> /var/lib/bluetooth/$BT_MAC/settings
 fi
@@ -33,7 +34,7 @@ ExecStartPost=/bin/hciconfig %I piscan
 ExecStartPost=/bin/hciconfig %I sspmode 1
 EOF
 
-cp -n /etc/systemd/system/bt-agent.service /etc/systemd/system/bt-agent.service.custom_bak
+cp -n /etc/systemd/system/bt-agent.service /etc/systemd/system/bt-agent.service.custom_bak 2>/dev/null
 cat <<'EOF' > /etc/systemd/system/bt-agent.service
 [Unit]
 Description=Bluetooth Agent
@@ -90,7 +91,7 @@ pcm.writeFile {
 # end
 EOF
 
-cp -n /etc/systemd/system/bluealsa-aplay.service /etc/systemd/system/bluealsa-aplay.service.custom_bak
+cp -n /etc/systemd/system/bluealsa-aplay.service /etc/systemd/system/bluealsa-aplay.service.custom_bak 2>/dev/null
 cat <<'EOF' > /etc/systemd/system/bluealsa-aplay.service
 [Unit]
 Description=BlueALSA aplay
