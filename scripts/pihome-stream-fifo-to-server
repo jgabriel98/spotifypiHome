@@ -13,8 +13,10 @@ fi
 
 
 FIFO=$1
-if [ -f "$FIFO" ]; then
+if [ ! -p "$FIFO" ]; then
+    echo "$FIFO not found"
     sudo mkfifo "$FIFO"
+    echo "created $FIFO"
 else
     dd if="$FIFO" iflag=nonblock of=/dev/null
 #    cat "$FIFO" > /dev/null
