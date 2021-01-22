@@ -65,7 +65,9 @@ if $INSTALL_RASPOTIFY; then
 
   echo -e "\n${GREEN}installing raspotify...${NC}"
 
-  curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
+  curl -k -L https://github.com/dtcooper/raspotify/releases/download/0.16.0/raspotify_0.16.0.librespot.v0.1.3-37-g0adb851_armhf.deb -o 'raspotify.deb' &&
+  sudo apt install ./raspotify.deb -y
+  rm -f raspotify.deb
 
   echo -e "\n${LIGHT_BLUE}configuring raspotify...${NC}"
 
