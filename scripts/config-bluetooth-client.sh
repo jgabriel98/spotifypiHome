@@ -2,8 +2,9 @@
 
 if [[ $(id -u) -ne 0 ]] ; then echo "Please run as root" ; exit 1 ; fi
 
+sudo apt install -y --no-install-recommends bluealsa
 bash config-bluetooth.sh "$1"
-exit 0
+
 cp pihome-stream-fifo-to-server /usr/local/bin/pihome-stream-fifo-to-server
 
 cat << 'EOF' > /etc/systemd/system/pihome-client-bt.service
@@ -46,4 +47,3 @@ if [ "$action" = "remove" ]; then
 fi
 EOF
 chmod 755 /usr/local/bin/bluetooth-udev
-
