@@ -9,7 +9,7 @@ read -p "Device name (default is '$DEVICE_NAME'): " DEVICE_NAME
 #apt install -y --no-install-recommends bluealsa
 
 bash config-bluetooth-client.sh "$DEVICE_NAME"
-exit 0
+
 mkdir -p /usr/local/share/sounds/bluetooth/
 cp ../files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
 cp ../files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav
