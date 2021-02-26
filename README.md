@@ -52,21 +52,19 @@ You can force the client node to use the headphone 3.5mm jack output with `--for
 
 note: you should check if you have the 'Headphones' playback device listed in alsa devices (with `$ aplay -l`)
 
+### Client's bluetooth: 
+You can also connect to a client's bluetooth (instead of beeing limited to only the servernode's bluetooth).<br/>
+ 
+ To enable this feature, run `enable-client-bluetooth.sh` script at `scripts/` folder: <br/>
+ `$ cd scripts && sudo ./enable-client-bluetooth.sh`
 
 
-### Uninstalling
+## Uninstalling
 
 To uninstall, run the `uninstall.sh` script with sudo permissions.<br/>
 Works for both _client_ and _server_.
-
-
-
-## Experimental
-The current features are experimental and still needs some fine tuning. But if it's here, is because i found it usable already.
-
- - **client's bluetooth**: you can also connect to a client's bluetooth (instead of beeing limited to only the servernode's bluetooth).<br/>
- To enable this feature, run `enable-client-bluetooth__experimental.sh` script at `scripts/` folder.
  
 
 ## Roadmap
 check the [spotifypiHome Developing page](https://github.com/jgabriel98/spotifypiHome/projects/1)
+
