@@ -16,8 +16,10 @@ DiscoverableTimeout = 0
 AutoEnable=true
 EOF
 
+# add this user to the bluetooth group -> not necessary anymore, since whe can just run bluetoothctl with sudo
+#sudo usermod -G bluetooth -a "$USER"
 # Ensure that name get changed
-BT_MAC=`bluetoothctl list | grep '[default]' | grep -o  "..:..:..:..:..:.."`
+BT_MAC=`sudo bluetoothctl list | grep '[default]' | grep -o  "..:..:..:..:..:.."`
 if grep '^Name' /var/lib/bluetooth/$BT_MAC/settings; then
   sed -i "s/Name.*/Name = $DEVICE_NAME/" /var/lib/bluetooth/$BT_MAC/settings
 else
