@@ -24,6 +24,7 @@ ExecStart=/bin/bash /usr/local/bin/pihome-stream-fifo-to-server "/tmp/snapfifo_b
 WantedBy=multi-user.target
 EOF
 systemctl daemon-reload
+sudo systemctl enable pihome-client-bt.service
 
 # Bluetooth udev script
 cat <<'EOF' > /usr/local/bin/bluetooth-udev

@@ -14,4 +14,4 @@ mkdir -p /usr/local/share/sounds/bluetooth/
 cp ../files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
 cp ../files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav
 
-sudo systemctl restart bluealsa.service bluealsa-aplay.service
+sudo systemctl restart bluealsa.service bluealsa-aplay.service pihome-client-bt.service
