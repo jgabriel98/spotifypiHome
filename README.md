@@ -55,8 +55,14 @@ note: you should check if you have the 'Headphones' playback device listed in al
 ### Client's bluetooth: 
 You can also connect to a client's bluetooth (instead of beeing limited to only the servernode's bluetooth).<br/>
  
- To enable this feature, from the client machine run `enable-client-bluetooth.sh` script at `scripts/` folder: <br/>
+ To enable this feature, from the **client only** machine run `enable-client-bluetooth.sh` script at `scripts/` folder: <br/>
  `$ cd scripts && sudo ./enable-client-bluetooth.sh`
+ 
+ ### Warning: 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Do **not** install _'client's bluetooth'_ (`enable-client-bluetooth.sh` script) on a machine that has _'server bluetooth'_ installed. They probably will conflict and cause unknow behavior. <br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+You can still install _'client's bluetooth'_ on a server machine if it was installed with `./serverInstall.sh --no-bluetooth`, but i've never tested it (if you've tried, tell me how it went).
 
 
 ## Uninstalling
