@@ -101,14 +101,16 @@ fi
 
 # bluetooth setup
 if $INSTALL_BLUETOOTH; then
- echo -e "\n${GREEN}installing BlueAlsa...${NC}"
- apt install -y --no-install-recommends bluealsa
-
- echo -e "\n${LIGHT_BLUE}configuring BlueAlsa...${NC}"
- bash ./scripts/config-bluetooth.sh "$DEVICE_NAME"
- mkdir -p /usr/local/share/sounds/bluetooth/
- cp ./files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
- cp ./files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav
+  if ! command -v bluealsa &> /dev/null; then
+    echo -e "\n{RED}bluealsa could not be found${NC}"
+    echo -e "{LIGHT_GRAY}skipping bluetooth instalation${NC}"
+  else
+    echo -e "\n${LIGHT_BLUE}configuring BlueAlsa...${NC}"
+    bash ./scripts/config-bluetooth.sh "$DEVICE_NAME"
+    mkdir -p /usr/local/share/sounds/bluetooth/
+    cp ./files/bt-device-connected.wav /usr/local/share/sounds/bluetooth/device-connected.wav
+    cp ./files/bt-device-disconnected.wav /usr/local/share/sounds/bluetooth/device-disconnected.wav
+  fi
 fi
 
 # snapserver setup
