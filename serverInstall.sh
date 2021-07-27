@@ -116,7 +116,7 @@ fi
 # snapserver setup
 
 echo -e "\n${GREEN}installing snapcast server...${NC}"
-curl -k -L https://github.com/badaix/snapcast/releases/download/v0.22.0/snapserver_0.22.0-1_armhf.deb -o 'snapserver.deb' &&
+curl -k -L https://github.com/badaix/snapcast/releases/download/v0.25.0/snapserver_0.25.0-1_armhf.deb -o 'snapserver.deb' &&
 sudo apt install ./snapserver.deb -y
 rm -f snapserver.deb
 

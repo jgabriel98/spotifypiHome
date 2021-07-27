@@ -45,7 +45,7 @@ done
 # snapclient setup
 
 echo -e "\n${GREEN}installing snapcast client...${NC}"
-curl -k -L https://github.com/badaix/snapcast/releases/download/v0.22.0/snapclient_0.22.0-1_armhf.deb -o 'snapclient.deb' &&
+curl -k -L https://github.com/badaix/snapcast/releases/download/v0.25.0/snapclient_0.25.0-1_without-pulse_armhf.deb -o 'snapclient.deb' &&
 sudo apt install ./snapclient.deb -y
 sudo rm -f snapclient.deb
 
