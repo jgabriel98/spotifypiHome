@@ -9,7 +9,7 @@ This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport
    `$ apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
 
  - **Bluetooth**: for bluetooth support, some _alsa_ and _bluez_ packages are required, you can obtain them with: <br/>
-    `$ apt install -y --no-install-recommends alsa-base alsa-utils bluez-tools`
+    `$ apt install -y --no-install-recommends alsa-base alsa-utils bluez-tools bluealsa`
 
 there are no dependencies needed for client nodes.
 
