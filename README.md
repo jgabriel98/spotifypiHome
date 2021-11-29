@@ -4,6 +4,10 @@ note: even if it is a multiroom solution, you can use it as unique room playback
 
 This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport-sync](https://github.com/mikebrady/shairport-sync), [BlueALSA](https://github.com/Arkq/bluez-alsa)  and [snapcast](https://github.com/badaix/snapcast). Without them this project wouldn't be possible.
 
+# DISCLAIMER:
+currently broke after raspotify `systemctl` service file update. Temporary workarround is to revert the commit dtcooper/raspotify@a844a33428018cae34e4c9642aaaca5964ae8502
+
+
 ## Dependencies:
  - **Airplay**: this project build shairport-sync from source, so to enable airplay support the following depencies requirements should be met: <br/>
    `$ apt install autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libssl-dev avahi-daemon libavahi-client-dev libsndfile1-dev`
