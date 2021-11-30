@@ -6,6 +6,7 @@ This project uses [raspotify](https://github.com/dtcooper/raspotify), [shairport
 
 # DISCLAIMER:
 currently broke after raspotify `systemctl` service file update. Temporary workarround is to revert [this commit](https://github.com/dtcooper/raspotify/commit/a844a33428018cae34e4c9642aaaca5964ae8502)
+You can keep track of the discussion [here](https://github.com/dtcooper/raspotify/issues/468)
 
 
 ## Dependencies:
