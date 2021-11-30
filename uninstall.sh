@@ -56,16 +56,17 @@ else
 fi
 
 if command -v shairport-sync &> /dev/null; then
+	SHAIRPORT_VERSION="3.3.8"
 	echo -e "\n${YELLOW}removing ${LIGHT_BLUE}shairport${NC}"
 	echo -e "\n${WHITE}building ${LIGHT_BLUE}shairport${WHITE} makefile${NC}"
-	curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
-	cd shairport-sync-3.3.7rc2/
+	curl -sL https://github.com/mikebrady/shairport-sync/archive/$SHAIRPORT_VERSION.tar.gz | tar xz
+	cd shairport-sync-$SHAIRPORT_VERSION/
 	autoreconf -i -f
 	./configure --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
-	
+
 	echo -e "\n${YELLOW}runing make uninstall for ${LIGHT_BLUE}shairport${NC}"
 	sudo make uninstall
-	rm -r shairport-sync-3.3.7rc2/
+	rm -r shairport-sync-$SHAIRPORT_VERSION/
 
 	echo -e "\n${YELLOW}cleaning ${LIGHT_BLUE}shairport${YELLOW}configuration files${NC}"
 	sudo systemctl stop shairport-sync.service

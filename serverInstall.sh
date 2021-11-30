@@ -58,14 +58,14 @@ done
 
 # raspotify setup
 if $INSTALL_RASPOTIFY; then
-  OPTIONS_VALUE="--device /tmp/snapfifo_raspotify"
+  OPTIONS_VALUE="--device /run/snapserver/snapfifo_raspotify"
   BACKEND_ARGS_VALUE="--backend pipe"
 
   RASPOTIFY_FILE="/etc/default/raspotify"
 
   echo -e "\n${GREEN}installing raspotify...${NC}"
 
-  curl -k -L https://github.com/dtcooper/raspotify/releases/download/0.16.0/raspotify_0.16.0.librespot.v0.1.3-37-g0adb851_armhf.deb -o 'raspotify.deb' &&
+  curl -k -L https://github.com/dtcooper/raspotify/releases/download/0.31.3/raspotify_0.31.3.librespot.v0.3.1-19-gbbd575e_armhf.deb -o 'raspotify.deb' &&
   sudo apt install ./raspotify.deb -y
   rm -f raspotify.deb
 
@@ -81,9 +81,10 @@ fi
 
 # shairport setup
 if $INSTALL_SHAIRPORT; then
+  SHAIRPORT_VERSION="3.3.8"
   echo -e "\n${YELLOW}building shairport-sync...${NC}"
-  curl -sL https://github.com/mikebrady/shairport-sync/archive/3.3.7rc2.tar.gz | tar xz
-  cd shairport-sync-3.3.7rc2/
+  curl -sL https://github.com/mikebrady/shairport-sync/archive/$SHAIRPORT_VERSION.tar.gz | tar xz
+  cd shairport-sync-$SHAIRPORT_VERSION/
   autoreconf -i -f
   ./configure 'CFLAGS=-O3' 'CXXFLAGS=-O3' --sysconfdir=/etc --with-pipe --with-systemd --with-avahi --with-ssl=openssl
   make
@@ -91,7 +92,7 @@ if $INSTALL_SHAIRPORT; then
   echo -e "\n${GREEN}installing shairport-sync...${NC}"
   sudo make install
   cd ..
-  rm -r shairport-sync-3.3.7rc2/
+  rm -r shairport-sync-$SHAIRPORT_VERSION/
   sudo systemctl enable shairport-sync
 
   echo -e "\n${LIGHT_BLUE}configuring shairport-sync...${NC}"
@@ -102,8 +103,9 @@ fi
 # bluetooth setup
 if $INSTALL_BLUETOOTH; then
   if ! command -v bluealsa &> /dev/null; then
-    echo -e "\n{RED}bluealsa could not be found${NC}"
-    echo -e "{LIGHT_GRAY}skipping bluetooth instalation${NC}"
+    echo -e "\n${RED}bluealsa could not be found${NC}"
+    echo -e "${LIGHT_GRAY}skipping bluetooth instalation${NC}"
+    INSTALL_BLUETOOTH=false
   else
     echo -e "\n${LIGHT_BLUE}configuring BlueAlsa...${NC}"
     bash ./scripts/config-bluetooth.sh "$DEVICE_NAME"
@@ -114,7 +116,6 @@ if $INSTALL_BLUETOOTH; then
 fi
 
 # snapserver setup
-
 echo -e "\n${GREEN}installing snapcast server...${NC}"
 curl -k -L https://github.com/badaix/snapcast/releases/download/v0.25.0/snapserver_0.25.0-1_armhf.deb -o 'snapserver.deb' &&
 sudo apt install ./snapserver.deb -y
@@ -123,21 +124,12 @@ rm -f snapserver.deb
 
 echo -e "\n${LIGHT_BLUE}configuring snapserver...${NC}"
 sudo cp ./etc/snapserver.conf /etc/snapserver.conf
-
-# old way to configure (and with multiple streams)
-#sudo sed -i "0,/^stream.*/s//first_mark_point_stream/" /etc/snapserver.conf
-#sudo sed -i "s/^stream.*//g" /etc/snapserver.conf
-
-#sudo sed -i "s/^first_mark_point_stream/# raspotify pipe stream\\n# shairport pipe stream/g" /etc/snapserver.conf
-
-#value="stream = pipe:///tmp/snapfifo?name=Spotify&sampleformat=44100:16:2"
-#sudo sed -i  "/# raspotify pipe stream/a ${value}" /etc/snapserver.conf
-#value="stream = pipe:///tmp/snapfifo_shairport?name=ShairportSync&sampleformat=44100:16:2"
-#sudo sed -i  "/# shairport pipe stream/a ${value}" /etc/snapserver.conf
+sed -i '/\[Service\]/a RuntimeDirectory=snapserver' /lib/systemd/system/snapserver.service
 
 
 echo -e "\n${CYAN}restarting raspotify, shairport-sync and snapcast services${NC}"
 if $INSTALL_RASPOTIFY; then sudo systemctl restart raspotify.service; fi
 if $INSTALL_SHAIRPORT; then sudo systemctl restart shairport-sync.service; fi
 if $INSTALL_BLUETOOTH; then sudo systemctl restart bluealsa.service bluealsa-aplay.service; fi
+sudo systemctl daemon-reload
 sudo systemctl restart snapserver.service
