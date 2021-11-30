@@ -126,17 +126,6 @@ echo -e "\n${LIGHT_BLUE}configuring snapserver...${NC}"
 sudo cp ./etc/snapserver.conf /etc/snapserver.conf
 sed -i '/\[Service\]/a RuntimeDirectory=snapserver' /lib/systemd/system/snapserver.service
 
-# old way to configure (and with multiple streams)
-#sudo sed -i "0,/^stream.*/s//first_mark_point_stream/" /etc/snapserver.conf
-#sudo sed -i "s/^stream.*//g" /etc/snapserver.conf
-
-#sudo sed -i "s/^first_mark_point_stream/# raspotify pipe stream\\n# shairport pipe stream/g" /etc/snapserver.conf
-
-#value="stream = pipe:///tmp/snapfifo?name=Spotify&sampleformat=44100:16:2"
-#sudo sed -i  "/# raspotify pipe stream/a ${value}" /etc/snapserver.conf
-#value="stream = pipe:///tmp/snapfifo_shairport?name=ShairportSync&sampleformat=44100:16:2"
-#sudo sed -i  "/# shairport pipe stream/a ${value}" /etc/snapserver.conf
-
 
 echo -e "\n${CYAN}restarting raspotify, shairport-sync and snapcast services${NC}"
 if $INSTALL_RASPOTIFY; then sudo systemctl restart raspotify.service; fi
