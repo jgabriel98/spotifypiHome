@@ -64,10 +64,7 @@ if $INSTALL_RASPOTIFY; then
   RASPOTIFY_FILE="/etc/default/raspotify"
 
   echo -e "\n${GREEN}installing raspotify...${NC}"
-
-  curl -k -L https://github.com/dtcooper/raspotify/releases/download/0.31.3/raspotify_0.31.3.librespot.v0.3.1-19-gbbd575e_armhf.deb -o 'raspotify.deb' &&
-  sudo apt install ./raspotify.deb -y
-  rm -f raspotify.deb
+  sudo apt-get -y install curl && curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
   echo -e "\n${LIGHT_BLUE}configuring raspotify...${NC}"
 
