@@ -58,22 +58,22 @@ done
 
 # raspotify setup
 if $INSTALL_RASPOTIFY; then
-  OPTIONS_VALUE="--device /run/snapserver/snapfifo_raspotify"
-  BACKEND_ARGS_VALUE="--backend pipe"
+  DEVICE_VALUE="/run/snapserver/snapfifo_raspotify"
+  BACKEND_VALUE="pipe"
 
-  RASPOTIFY_FILE="/etc/default/raspotify"
+  RASPOTIFY_FILE="/etc/raspotify/conf"
 
   echo -e "\n${GREEN}installing raspotify...${NC}"
   sudo apt-get -y install curl && curl -sL https://dtcooper.github.io/raspotify/install.sh | sh
 
   echo -e "\n${LIGHT_BLUE}configuring raspotify...${NC}"
 
-  OPTIONS_CONF="OPTIONS=\"${OPTIONS_VALUE}\""
-  BACKEND_CONF="BACKEND_ARGS=\"${BACKEND_ARGS_VALUE}\""
-  DEVICE_NAME_CONF="DEVICE_NAME=\"${DEVICE_NAME}\""
-  grep -q -e "^${OPTIONS_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#OPTIONS=/a ${OPTIONS_CONF}" "${RASPOTIFY_FILE}"
-  grep -q -e "^${BACKEND_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#BACKEND_ARGS=/a ${BACKEND_CONF}" "${RASPOTIFY_FILE}"
-  grep -q -e "^${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#DEVICE_NAME=/a ${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}"
+  OPTIONS_CONF="LIBRESPOT_DEVICE=\"${DEVICE_VALUE}\""
+  BACKEND_CONF="LIBRESPOT_BACKEND=\"${BACKEND_VALUE}\""
+  DEVICE_NAME_CONF="LIBRESPOT_NAME=\"${DEVICE_NAME}\""
+  grep -q -e "^${OPTIONS_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#LIBRESPOT_DEVICE=/a ${OPTIONS_CONF}" "${RASPOTIFY_FILE}"
+  grep -q -e "^${BACKEND_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#LIBRESPOT_BACKEND=/a ${BACKEND_CONF}" "${RASPOTIFY_FILE}"
+  grep -q -e "^${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}" || sudo sed -i "/#LIBRESPOT_NAME=/a ${DEVICE_NAME_CONF}" "${RASPOTIFY_FILE}"
 fi
 
 # shairport setup
@@ -114,7 +114,7 @@ fi
 
 # snapserver setup
 echo -e "\n${GREEN}installing snapcast server...${NC}"
-curl -k -L https://github.com/badaix/snapcast/releases/download/v0.25.0/snapserver_0.25.0-1_armhf.deb -o 'snapserver.deb' &&
+curl -k -L https://github.com/badaix/snapcast/releases/download/v0.26.0/snapserver_0.26.0-1_armhf.deb -o 'snapserver.deb' &&
 sudo apt install ./snapserver.deb -y
 rm -f snapserver.deb
 
